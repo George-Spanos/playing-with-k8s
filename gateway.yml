@@ -1,0 +1,65 @@
+# apiVersion: gateway.networking.k8s.io/v1alpha2
+# kind: GatewayClass
+# metadata:
+#   name: my-gateway-class
+# spec:
+#   controllerName: example.net/gateway-controller
+# ---
+# apiVersion: gateway.networking.k8s.io/v1alpha2
+# kind: Gateway
+# metadata:
+#   name: my-gateway
+#   namespace: default
+# spec:
+#   gatewayClassName: my-gateway-class
+#   listeners:
+#   - name: http
+#     protocol: HTTP
+#     port: 80
+#     routes:
+#       kind: HTTPRoute
+#       selector:
+#         matchLabels:
+#           app: gaming-grids-client
+#   - name: https
+#     protocol: HTTPS
+#     port: 443
+#     tls:
+#       mode: Terminate
+#       certificateRefs:
+#       - kind: Secret
+#         name: my-tls-secret
+#     routes:
+#       kind: HTTPRoute
+#       selector:
+#         matchLabels:
+#           app: gaming-grids-client
+# ---
+# apiVersion: gateway.networking.k8s.io/v1alpha2
+# kind: HTTPRoute
+# metadata:
+#   name: gaming-grids-client-route
+#   namespace: default
+#   labels:
+#     app: gaming-grids-client
+# spec:
+#   hostnames:
+#   - "leaguetest.mobyplaygrounds.com"
+#   rules:
+#   - matches:
+#     - path:
+#         type: Prefix
+#         value: /
+#     forwardTo:
+#     - serviceName: gaming-grids-client
+#       port: 80
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: my-tls-secret
+#   namespace: default
+# type: kubernetes.io/tls
+# data:
+#   tls.crt: <base64-encoded-cert>
+#   tls.key: <base64-encoded-key>

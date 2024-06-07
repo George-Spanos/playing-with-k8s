@@ -120,6 +120,7 @@ echo -e "\nCNI plugin installed succesfully"
 
 echo -e "Opening ports for k8s..."
 
+ufw allow ssh
 ufw allow 6443/tcp
 ufw allow 2379/tcp
 ufw allow 2380/tcp
@@ -153,3 +154,25 @@ kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.0
 echo -e "remove taint of no nodes on control plane node"
 kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 
+cat << EOF 
+You now need to generate a user
+More info: https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/#kubeconfig-additional-users
+
+Then you need to give them the correct permissions
+
+-- example: cluster-admin-binding.yaml -- 
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cluster-admin-binding
+subjects:
+- kind: User
+  name: your-username  # Replace with the actual username
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+EOF
+
+echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> .bashrc
