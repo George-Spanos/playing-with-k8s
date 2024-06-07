@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gaming-grids-client
+  labels:
+    app.kubernetes.io/part-of: gaming-grids
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: gaming-grids-client
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: gaming-grids-client
+        app.kubernetes.io/part-of: gaming-grids
+    spec:
+      containers:
+      - image: ghcr.io/moby-it/gaming-grids:stable
+        name: gaming-grids-app
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        ports:
+          - containerPort: 3000
+            name: http-port
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"    
+      
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gaming-grids-client
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.1.100
+spec:
+  selector:
+    app.kubernetes.io/name: gaming-grids-client
+  ports:
+    - name: gaming-grids-client-port
+      port: 80
+      targetPort: http-port
+      protocol: TCP
