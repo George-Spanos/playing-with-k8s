@@ -403,7 +403,7 @@ controller:
       # nodePort: 443
 
       ## The HTTPS port on the POD where the Ingress Controller service is running.
-      targetPort: 80
+      targetPort: 443
 
     ## A list of custom ports to expose through the Ingress Controller service. Follows the conventional Kubernetes yaml syntax for service ports.
     customPorts: []

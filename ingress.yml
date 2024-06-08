@@ -5,7 +5,9 @@ metadata:
   namespace: gaming-grids
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    cert-manager.io/issuer: "letsencrypt-staging"
+    acme.cert-manager.io/http01-edit-in-place: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    cert-manager.io/issuer: "letsencrypt-prod"
 
 spec:
   ingressClassName: nginx

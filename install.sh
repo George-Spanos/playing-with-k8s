@@ -157,7 +157,7 @@ kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/
 
 echo -e "remove taint of no nodes on control plane node"
 kubectl taint nodes --all node-role.kubernetes.io/control-plane-
-
+modprobe br_netfilter # need this if core dns is on the same node as a pod
 echo -e "Generating users"
 
 cat << EOF > user.yml

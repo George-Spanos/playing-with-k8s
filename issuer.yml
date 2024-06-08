@@ -1,15 +1,8 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: cert-manager
-spec: {}
-status: {}
----
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: letsencrypt-staging
-  namespace: cert-manager
+  namespace: gaming-grids
 spec:
   acme:
     # The ACME server URL
@@ -29,7 +22,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: letsencrypt-prod
-  namespace: cert-manager
+  namespace: gaming-grids
 spec:
   acme:
     # The ACME server URL
