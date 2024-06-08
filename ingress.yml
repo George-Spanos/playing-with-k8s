@@ -2,17 +2,17 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: cluster-ingress
-  namespace: ingress-nginx
+  namespace: gaming-grids
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    # cert-manager.io/issuer: "letsencrypt-staging"
+    cert-manager.io/issuer: "letsencrypt-staging"
 
 spec:
   ingressClassName: nginx
-  # tls:
-  #   - hosts:
-  #       - leaguetest.mobyplaygrounds.com
-  #     secretName: leaguetest-mobyplaygrounds-tls
+  tls:
+    - hosts:
+        - leaguetest.mobyplaygrounds.com
+      secretName: leaguetest-mobyplaygrounds-tls
   rules:
     - host: leaguetest.mobyplaygrounds.com
       http:

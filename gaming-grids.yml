@@ -32,7 +32,7 @@ spec:
         #   periodSeconds: 20
         ports:
           - containerPort: 3000
-            name: http-port
+            name: container-port
         resources:
           requests:
             memory: "128Mi"
@@ -55,7 +55,7 @@ spec:
   ports:
     - name: gaming-grids-client-port
       port: 80
-      targetPort: http-port
+      targetPort: container-port
       protocol: TCP
-  type: LoadBalancer
+  type: ClusterIP
   
