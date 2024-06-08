@@ -6,17 +6,16 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     acme.cert-manager.io/http01-edit-in-place: "true"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
     cert-manager.io/issuer: "letsencrypt-prod"
 
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - leaguetest.mobyplaygrounds.com
-      secretName: leaguetest-mobyplaygrounds-tls
+        - leaguet.mobyplaygrounds.com
+      secretName: leaguet-mobyplaygrounds-tls
   rules:
-    - host: leaguetest.mobyplaygrounds.com
+    - host: leaguet.mobyplaygrounds.com
       http:
         paths:
           - path: /

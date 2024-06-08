@@ -57,5 +57,5 @@ spec:
       port: 80
       targetPort: container-port
       protocol: TCP
-  type: ClusterIP
+  type: LoadBalancer
   
