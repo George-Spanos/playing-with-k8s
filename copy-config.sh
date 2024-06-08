@@ -1,0 +1,1 @@
+scp root@minicap:/root/gspanos.yml ~/.kube/minicap.yml

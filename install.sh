@@ -1,3 +1,6 @@
+#!/bin/bash
+# setting up an empty computers with a k8s installation
+
 set -e
 
 sudo apt update
@@ -144,35 +147,46 @@ sudo systemctl enable --now kubelet
 
 echo -e "starting cluster"
 
-kubeadm init --pod-network-cidr=192.168.0.0/16
-
-echo -e "Installing calico"
+kubeadm init --pod-network-cidr=10.244.0.0/16
 
 export KUBECONFIG=/etc/kubernetes/admin.conf
-kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/tigera-operator.yaml
-kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/custom-resources.yaml
+
+echo -e "Installing flannel"
+
+kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+
 echo -e "remove taint of no nodes on control plane node"
 kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 
-cat << EOF 
-You now need to generate a user
-More info: https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/#kubeconfig-additional-users
+echo -e "Generating users"
 
-Then you need to give them the correct permissions
+cat << EOF > user.yml
+apiVersion: kubeadm.k8s.io/v1beta3
+kind: ClusterConfiguration
+clusterName: "kubernetes"
+controlPlaneEndpoint: "188.34.185.207:6443"
+certificatesDir: "/etc/kubernetes/pki"
+EOF
 
--- example: cluster-admin-binding.yaml -- 
+kubeadm kubeconfig user --config user.yml --org moby --client-name gspanos > gspanos.yml
+
+echo -e "Give admin permissions"
+
+cat << EOF > cluster-admin.yml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: cluster-admin-binding
 subjects:
 - kind: User
-  name: your-username  # Replace with the actual username
+  name: gspanos
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: ClusterRole
   name: cluster-admin
   apiGroup: rbac.authorization.k8s.io
 EOF
+kubectl apply -f cluster-admin.yml
 
 echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> .bashrc
+source .bashrc

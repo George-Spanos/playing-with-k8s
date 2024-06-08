@@ -1,7 +1,13 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gaming-grids
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gaming-grids-client
+  namespace: gaming-grids
   labels:
     app.kubernetes.io/part-of: gaming-grids
 spec:
@@ -18,12 +24,12 @@ spec:
       containers:
       - image: ghcr.io/moby-it/gaming-grids:stable
         name: gaming-grids-app
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 80
-          initialDelaySeconds: 15
-          periodSeconds: 20
+        # livenessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: 80
+        #   initialDelaySeconds: 15
+        #   periodSeconds: 20
         ports:
           - containerPort: 3000
             name: http-port
@@ -42,6 +48,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: gaming-grids-client
+  namespace: gaming-grids
 spec:
   selector:
     app.kubernetes.io/name: gaming-grids-client
@@ -50,3 +57,5 @@ spec:
       port: 80
       targetPort: http-port
       protocol: TCP
+  type: LoadBalancer
+  
