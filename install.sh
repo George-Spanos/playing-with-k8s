@@ -20,6 +20,14 @@ else
     exit 1
 fi
 
+# clusterName="kubernetes"
+# clusterIP="188.34.185.207"
+# username="gpanos"
+
+clusterName="kubernetes-test"
+clusterIP="49.12.111.118"
+username="gpanos-test"
+
 containerdVersion="1.7.18"
 containerdURL="https://github.com/containerd/containerd/releases/download/v$containerdVersion/containerd-$containerdVersion-linux-amd64.tar.gz"
 containerdFilename="containerd-$containerdVersion-linux-amd64.tar.gz"
@@ -163,12 +171,12 @@ echo -e "Generating users"
 cat << EOF > user.yml
 apiVersion: kubeadm.k8s.io/v1beta3
 kind: ClusterConfiguration
-clusterName: "kubernetes"
-controlPlaneEndpoint: "188.34.185.207:6443"
+clusterName: $clusterName
+controlPlaneEndpoint: "$clusterIP:6443"
 certificatesDir: "/etc/kubernetes/pki"
 EOF
 
-kubeadm kubeconfig user --config user.yml --org moby --client-name gspanos > gspanos.yml
+kubeadm kubeconfig user --config user.yml --org moby --client-name $username > $username.yml
 
 echo -e "Give admin permissions"
 
@@ -179,7 +187,7 @@ metadata:
   name: cluster-admin-binding
 subjects:
 - kind: User
-  name: gspanos
+  name: $username
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: ClusterRole
