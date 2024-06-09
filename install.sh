@@ -198,3 +198,10 @@ kubectl apply -f cluster-admin.yml
 
 echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> .bashrc
 source .bashrc
+
+echo -e "install helix"
+
+
+curl -L https://github.com/helix-editor/helix/releases/download/24.03/helix-24.03-x86_64.AppImage -o /usr/local/bin/hx
+sudo apt install libfuse2
+chmod +x /usr/local/bin/hx
