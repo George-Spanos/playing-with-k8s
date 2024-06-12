@@ -10,7 +10,7 @@ Ingress Notes
 
 - Do the issuers need to be on the same namespace? **Yes**
 - Does the ingress need? `acme.cert-manager.io/http01-edit-in-place: "true", nginx.ingress.kubernetes.io/force-ssl-redirect: "false"`
-  - **Only `acme.cert-manager.io/http01-edit-in-place: "true"` is needed**
+  - **Both are needed for ssl validation**
 - does the app service need to be cluster ip? Is it better to be load balancer? It can be load balancer as well
   - the idea is that the load balancer is intended for services you expose outside of the cluster. Cluster IP is fine for internal services
 

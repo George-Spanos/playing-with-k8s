@@ -1,14 +1,13 @@
 #!/bin/bash
 
 # this script is intented to run when the kubectl has access to the cluster
-# in order to run some post set up stuff
+# in order to run some post set up stuff. This script is intended to run on your local computer 
+# that has helm installed and docker logged in to your private registry
 
 # docker registry secret. Remember to create this for every namespace that neeeds it
 kubectl create secret generic regcred \
   --from-file=.dockerconfigjson=/home/gspanos/.docker/config.json \
   --type=kubernetes.io/dockerconfigjson
-
-
 
 # metallb
 helm repo add metallb https://metallb.github.io/metallb

@@ -22,25 +22,25 @@ spec:
         app.kubernetes.io/part-of: gaming-grids
     spec:
       containers:
-      - image: ghcr.io/moby-it/gaming-grids:stable
-        name: gaming-grids-app
-        # livenessProbe:
-        #   httpGet:
-        #     path: /
-        #     port: 80
-        #   initialDelaySeconds: 15
-        #   periodSeconds: 20
-        ports:
-          - containerPort: 3000
-            name: container-port
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "250m"
-          limits:
-            memory: "256Mi"
-            cpu: "500m"    
-      
+        - image: ghcr.io/moby-it/gaming-grids:stable
+          name: gaming-grids-app
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 80
+          #   initialDelaySeconds: 15
+          #   periodSeconds: 20
+          ports:
+            - containerPort: 3000
+              name: container-port
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+
       imagePullSecrets:
         - name: regcred
 ---
@@ -58,4 +58,3 @@ spec:
       targetPort: container-port
       protocol: TCP
   type: LoadBalancer
-  
