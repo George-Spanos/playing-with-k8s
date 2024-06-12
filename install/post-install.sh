@@ -15,7 +15,6 @@ helm install metallb metallb/metallb --namespace metallb-system --create-namespa
 kubectl apply -f metallb.yml
 
 # nginx ingress controller
-kubectl create ns ingress-nginx
 helm install nginx-controller --namespace ingress-nginx --create-namespace ./nginx-ingress
 
 # cert managerz
