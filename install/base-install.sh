@@ -13,6 +13,7 @@ net.ipv4.ip_forward = 1
 EOF
 
 sudo sysctl --system
+modprobe br_netfilter
 
 if [[ $(sysctl net.ipv4.ip_forward) == "net.ipv4.ip_forward = 1" ]]; then
     echo "IP forwarding is enabled."
